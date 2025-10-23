@@ -27,19 +27,13 @@ public class ProductService {
         if (targetCurrency.equalsIgnoreCase(product.getCurrency())) {
             product.setConvertedPrice(product.getPrice());
         } else {
-            try {
-                CurrencyResponse currency = getCurrencyWithFallback(
-                    product.getPrice(), 
-                    product.getCurrency(), 
-                    targetCurrency
-                );
-                product.setConvertedPrice(currency.getConvertedValue());
-                product.setEnviroment(product.getEnviroment() + " - " + currency.getEnviroment());
-            } catch (Exception e) {
-                // Fallback: set converted price to -1
-                product.setConvertedPrice(-1);
-                product.setEnviroment(product.getEnviroment() + " - Currency service unavailable");
-            }
+            CurrencyResponse currency = getCurrencyWithFallback(
+                product.getPrice(), 
+                product.getCurrency(), 
+                targetCurrency
+            );
+            product.setConvertedPrice(currency.getConvertedValue());
+            product.setEnviroment(product.getEnviroment() + " - " + currency.getEnviroment());
         }
         
         return product;
